@@ -1,5 +1,17 @@
 import logging 
 import time
+import asyncio
+import sys
+
+# === FIX: Add event loop compatibility for Python 3.10+ ===
+if sys.version_info >= (3, 10):
+    try:
+        asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+# Now safe to import Abg
 from Abg import patch
 
 from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
